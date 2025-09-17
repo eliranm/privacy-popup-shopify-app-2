@@ -2,7 +2,7 @@
 
 name = "privacy-popup"
 client_id = "{{ SHOPIFY_API_KEY }}"
-application_url = "{{ APPLICATION_URL }}"
+application_url = "https://privacy-popup.q-biz.co.il"
 embedded = true
 
 [access_scopes]
@@ -11,9 +11,9 @@ scopes = "write_themes,read_themes"
 
 [auth]
 redirect_urls = [
-  "{{ APPLICATION_URL }}/auth/callback",
-  "{{ APPLICATION_URL }}/auth/shopify/callback",
-  "{{ APPLICATION_URL }}/api/auth/callback"
+  "https://privacy-popup.q-biz.co.il/auth/callback",
+  "https://privacy-popup.q-biz.co.il/auth/shopify/callback",
+  "https://privacy-popup.q-biz.co.il/api/auth/callback"
 ]
 
 [webhooks]

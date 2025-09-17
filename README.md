@@ -57,8 +57,8 @@ Required environment variables:
 - `SHOPIFY_API_KEY` - Your app's API key
 - `SHOPIFY_API_SECRET` - Your app's API secret  
 - `SCOPES` - App permissions (write_themes,read_themes)
-- `HOST` - Your app's URL
-- `APPLICATION_URL` - Your app's URL
+- `HOST` - Your app's URL (https://privacy-popup.q-biz.co.il)
+- `APPLICATION_URL` - Your app's URL (https://privacy-popup.q-biz.co.il)
 - `SESSION_SECRET` - Random session secret
 - `WEBHOOK_SECRET` - Webhook verification secret
 
