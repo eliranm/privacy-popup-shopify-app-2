@@ -1,0 +1,14 @@
+---
+description: Vercel deployment & environment hygiene for Shopify apps.
+globs:
+  - vercel.json
+  - .vercel/**/*
+  - src/**/*
+alwaysApply: true
+---
+
+Rules:
+- Configure env vars in Vercel (SHOPIFY_API_KEY, SHOPIFY_API_SECRET, SCOPES, APP_URL, WEBHOOK_SECRET if separate).
+- Never commit secrets. Use Vercel project-level envs and pull locally via `vercel env pull`.
+- Health endpoint `/api/health` for uptime checks.
+- Enable edge cache only for static assets and public pages; never cache embedded app screens with session data.

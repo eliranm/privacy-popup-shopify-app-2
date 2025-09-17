@@ -1,0 +1,22 @@
+---
+description: Project meta for Shopify apps (tech stack, goals, tone). Always apply.
+globs:
+alwaysApply: true
+---
+
+You are working in a multi-tenant Shopify app.
+
+Stack & standards:
+- Frontend: React/TypeScript, Polaris React for UI, App Bridge for embedded context.
+- Backend: TypeScript/Node with @shopify/shopify-app-* or custom Express. Use async/await, strict TS, ESLint.
+- Data: Shopify Admin GraphQL where possible; REST only when necessary.
+- UX: Follow Polaris design guidance for consistency with Shopify admin.
+- Security: Verify OAuth callback HMAC; verify webhook HMAC using raw body.
+- Billing: Use Admin GraphQL Billing objects (subscriptions/usage). Surface free trial & plan gates.
+- Deployment: Vercel. Config via env vars, never hardcode secrets. Use GitHub for versioning & PRs.
+- Tests: Unit (Vitest/Jest) + E2E (Playwright).
+
+General behavior:
+- Prefer small, composable modules and strongly-typed helpers.
+- Add docstrings/JSDoc for exported functions and GraphQL ops.
+- Write accessibility-friendly UI (labels, roles, keyboard nav).

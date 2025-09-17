@@ -1,0 +1,12 @@
+---
+description: Security, privacy, and compliance guardrails.
+globs:
+  - src/**/*
+alwaysApply: true
+---
+
+Rules:
+- Never log tokens, HMACs, or customer PII. Redact shop domains in error messages where possible.
+- CSRF-protect non-GET endpoints; use SameSite cookies as appropriate for embedded context.
+- Rotate webhook secrets on schedule; document rotation runbook.
+- Provide a Privacy Policy link and data deletion endpoint per Shopify requirements.

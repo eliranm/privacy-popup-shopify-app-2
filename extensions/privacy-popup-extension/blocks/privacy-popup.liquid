@@ -1,0 +1,157 @@
+{% comment %}
+  Privacy Popup App Embed Block
+  This block creates a privacy popup that can be enabled/disabled by merchants
+{% endcomment %}
+
+{%- if block.settings.enabled -%}
+  <div 
+    id="privacy-popup-{{ block.id }}" 
+    class="privacy-popup-overlay"
+    style="display: none;"
+    data-popup-id="{{ block.id }}"
+  >
+    <div class="privacy-popup-container">
+      <div class="privacy-popup-content">
+        <h3 class="privacy-popup-title">{{ block.settings.popup_title | default: 'Privacy Notice' }}</h3>
+        <div class="privacy-popup-text">
+          {{ block.settings.popup_text | default: 'We use cookies to improve your experience on our site. By continuing to browse, you agree to our use of cookies.' | newline_to_br }}
+        </div>
+        <div class="privacy-popup-buttons">
+          <button 
+            type="button" 
+            class="privacy-popup-accept"
+            data-popup-id="{{ block.id }}"
+          >
+            {{ block.settings.accept_text | default: 'Accept' }}
+          </button>
+          {% if block.settings.show_decline %}
+            <button 
+              type="button" 
+              class="privacy-popup-decline"
+              data-popup-id="{{ block.id }}"
+            >
+              {{ block.settings.decline_text | default: 'Decline' }}
+            </button>
+          {% endif %}
+          {% if block.settings.privacy_policy_url != blank %}
+            <a 
+              href="{{ block.settings.privacy_policy_url }}" 
+              class="privacy-popup-policy-link"
+              target="_blank"
+              rel="noopener"
+            >
+              {{ block.settings.policy_link_text | default: 'Privacy Policy' }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ 'privacy-popup.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'privacy-popup.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Privacy Popup",
+  "target": "head",
+  "javascript": "privacy-popup.js",
+  "stylesheet": "privacy-popup.css",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable Privacy Popup",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "popup_title",
+      "label": "Popup Title",
+      "default": "Privacy Notice"
+    },
+    {
+      "type": "textarea",
+      "id": "popup_text",
+      "label": "Popup Text",
+      "default": "We use cookies to improve your experience on our site. By continuing to browse, you agree to our use of cookies."
+    },
+    {
+      "type": "text",
+      "id": "accept_text",
+      "label": "Accept Button Text",
+      "default": "Accept"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decline",
+      "label": "Show Decline Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "decline_text",
+      "label": "Decline Button Text",
+      "default": "Decline"
+    },
+    {
+      "type": "url",
+      "id": "privacy_policy_url",
+      "label": "Privacy Policy URL"
+    },
+    {
+      "type": "text",
+      "id": "policy_link_text",
+      "label": "Privacy Policy Link Text",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Popup Position",
+      "options": [
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "label": "Show Delay (seconds)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "accept_button_color",
+      "label": "Accept Button Color",
+      "default": "#007cba"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+---
+description: Robust webhook subscription & validation.
+globs:
+  - src/server/**/*.{ts,js}
+alwaysApply: true
+---
+
+Rules:
+- Subscribe to required topics on install/update; idempotent registration.
+- Validate HMAC on every webhook with raw body; respond 200 fast (<5s).
+- Defer heavy work to async jobs/queues; retry-safe handlers (idempotency keys).
+- Log topic, shop, delivery-id; never log PII.
+- Version topics explicitly when Shopify versions change.
+
+Code hint:
+- Create /webhooks/index.ts with registerWebhooks() and handler map.

@@ -1,0 +1,18 @@
+---
+description: OAuth flow & HMAC verification for Shopify apps.
+globs:
+  - src/server/**/*.{ts,js}
+  - src/app/**/*.{ts,js}
+  - src/pages/api/**/*.{ts,js}
+alwaysApply: true
+---
+
+Rules:
+- Verify install/query HMAC on OAuth callback: remove `hmac` from params, HMAC-SHA256 the rest using app secret, compare timing-safe.
+- Store access tokens securely per-shop. Never log tokens or secrets.
+- For webhooks: compute HMAC from *raw* request body and compare with `X-Shopify-Hmac-SHA256`.
+- Reject requests with invalid/expired signatures; return 401 and log (redacted) context.
+
+Implementation notes:
+- Keep a shared verifyHmac(queryOrRawBody) utility; unit test it with fixtures.
+- Use rotating session storage if available in your chosen Shopify app package.

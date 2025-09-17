@@ -1,0 +1,8 @@
+name = "privacy-popup-extension"
+type = "theme"
+
+[extension_points]
+
+[[extension_points.metafields]]
+namespace = "$app:privacy-popup"
+key = "settings"

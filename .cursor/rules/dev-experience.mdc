@@ -1,0 +1,13 @@
+---
+description: Local dev ergonomics and DX helpers.
+globs:
+  - .env*
+  - package.json
+  - scripts/**/*.{ts,js}
+alwaysApply: true
+---
+
+Rules:
+- Provide `dev` script that runs app + tunnel (or use Shopify CLI) with clear logs for OAuth, webhooks, billing callbacks.
+- Add `scaffold:*` scripts to generate typed GraphQL ops and Polaris pages.
+- Keep a `docs/GETTING_STARTED.md` with install, env vars, and common pitfalls.

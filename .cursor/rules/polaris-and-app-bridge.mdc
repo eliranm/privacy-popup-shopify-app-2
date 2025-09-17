@@ -1,0 +1,17 @@
+---
+description: Use Polaris React + App Bridge correctly in embedded apps.
+globs:
+  - src/**/*
+alwaysApply: true
+---
+
+UI rules:
+- Use Polaris React components for all admin-facing UI (Buttons, Forms, Layout).
+- Wrap the app in Polaris <AppProvider> and App Bridge <Provider>. Share i18n & theming.
+- Use App Bridge actions (TitleBar/Toast/Modal) instead of hand-rolling equivalents.
+- Keep embedded routing stable; handle redirect via App Bridge utilities.
+
+Code hints:
+- Create a ui/providers/AppProviders.tsx that mounts both providers.
+- Export a useAppBridge() hook (from @shopify/app-bridge-react) for dispatching actions.
+- Prefer server-driven metadata over client guesses for shop/host/session.

@@ -1,0 +1,9 @@
+{
+  "privacy_popup": {
+    "title": "Privacy Notice",
+    "default_text": "We use cookies to improve your experience on our site. By continuing to browse, you agree to our use of cookies.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "privacy_policy": "Privacy Policy"
+  }
+}

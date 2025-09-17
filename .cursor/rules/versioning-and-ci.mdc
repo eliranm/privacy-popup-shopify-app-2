@@ -1,0 +1,13 @@
+---
+description: Branching, PRs, and CI quality gates.
+globs:
+  - .github/workflows/**/*.yml
+  - .git/**/* 
+  - src/**/*
+alwaysApply: true
+---
+
+Rules:
+- Use conventional commits and PR templates including: screenshots, test notes, and risk.
+- CI must run: type-check, lint, unit tests, build, and a lightweight e2e smoke (install screen loads).
+- Do not merge to main with failing checks. Require code owners for app surfaces that affect billing/auth.

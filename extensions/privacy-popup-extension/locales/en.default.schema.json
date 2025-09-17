@@ -1,0 +1,49 @@
+{
+  "name": "Privacy Popup",
+  "settings": {
+    "enabled": {
+      "label": "Enable Privacy Popup"
+    },
+    "popup_title": {
+      "label": "Popup Title"
+    },
+    "popup_text": {
+      "label": "Popup Text"
+    },
+    "accept_text": {
+      "label": "Accept Button Text"
+    },
+    "show_decline": {
+      "label": "Show Decline Button"
+    },
+    "decline_text": {
+      "label": "Decline Button Text"
+    },
+    "privacy_policy_url": {
+      "label": "Privacy Policy URL"
+    },
+    "policy_link_text": {
+      "label": "Privacy Policy Link Text"
+    },
+    "position": {
+      "label": "Popup Position",
+      "options": {
+        "bottom": "Bottom",
+        "top": "Top",
+        "center": "Center"
+      }
+    },
+    "delay": {
+      "label": "Show Delay (seconds)"
+    },
+    "background_color": {
+      "label": "Background Color"
+    },
+    "text_color": {
+      "label": "Text Color"
+    },
+    "accept_button_color": {
+      "label": "Accept Button Color"
+    }
+  }
+}

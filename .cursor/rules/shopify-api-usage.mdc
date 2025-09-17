@@ -1,0 +1,13 @@
+---
+description: Safe/performant Shopify API usage.
+globs:
+  - src/lib/shopify/**/*.{ts,js}
+  - src/server/**/*.{ts,js}
+alwaysApply: true
+---
+
+Rules:
+- Respect Shopify API rate limits; batch and backoff; prefer GraphQL over REST when practical.
+- For lists >250/page, iterate with cursors; for very large jobs use bulk ops and notify user on completion.
+- Narrow field selection; avoid over-fetching.
+- Don’t rely on counts >25,000 for Liquid/Storefront arrays; design UX with filters.

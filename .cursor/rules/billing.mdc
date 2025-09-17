@@ -1,0 +1,17 @@
+---
+description: App Billing (subscriptions/usage) via Admin GraphQL.
+globs:
+  - src/server/**/*.{ts,js}
+  - src/lib/shopify/**/*.{ts,js}
+alwaysApply: true
+---
+
+Rules:
+- Implement plans using Admin GraphQL Billing objects (subscriptions; optional usage metering).
+- Gate premium features by plan; surface upgrade/downgrade paths in UI.
+- Handle trials & grace periods; listen to billing webhooks for status changes.
+- If plan changes, re-fetch entitlements server-side and cache per session.
+
+Developer notes:
+- Expose a createOrUpdateSubscription(shop, plan) helper with clear return states.
+- Store billing state normalized (ACTIVE, PAST_DUE, CANCELED) and display in settings page.

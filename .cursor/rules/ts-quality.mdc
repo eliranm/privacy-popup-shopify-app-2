@@ -1,0 +1,12 @@
+---
+description: TypeScript strictness & lint hygiene.
+globs:
+  - tsconfig.json
+  - src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+Rules:
+- TS strict mode on; no implicit any, noUnusedLocals/Parameters=true.
+- ESLint: no-floating-promises, explicit return types on exported functions, prefer readonly where possible.
+- Add zod or similar for runtime validation on external inputs (webhooks, query params).

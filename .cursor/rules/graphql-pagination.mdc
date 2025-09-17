@@ -1,0 +1,15 @@
+---
+description: Cursor-based pagination & bulk for large datasets.
+globs:
+  - src/**/*
+alwaysApply: true
+---
+
+Rules:
+- Use cursor pagination: `first/after` (forward) and `last/before` (back). Always select `pageInfo { hasNextPage hasPreviousPage startCursor endCursor }`.
+- Treat cursors as opaque; never decode.
+- Max per page 250; for large exports use Admin GraphQL bulk operations.
+- Reset cursors when filters/sort/search changes; persist cursor state in URL if the UI supports back/forward.
+
+Code hint:
+- Create a typed paginateConnection<T>() helper that returns nodes, pageInfo, and next/prev helpers.

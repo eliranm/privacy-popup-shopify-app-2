@@ -1,0 +1,47 @@
+{
+  "name": "privacy-popup-shopify-app",
+  "version": "1.0.0",
+  "description": "A Shopify app that adds a privacy popup as a theme app embed block",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\" \"npm run ngrok\"",
+    "build": "npm run client:build && npm run server:build",
+    "server:dev": "nodemon server/index.js",
+    "server:build": "echo 'Server build complete'",
+    "client:dev": "vite",
+    "client:build": "vite build",
+    "preview": "vite preview",
+    "ngrok": "ngrok http 3000 --subdomain=privacy-popup-dev",
+    "deploy": "shopify app deploy",
+    "scaffold:page": "shopify app generate page",
+    "scaffold:extension": "shopify app generate extension"
+  },
+  "dependencies": {
+    "@shopify/app-bridge": "^3.7.10",
+    "@shopify/app-bridge-react": "^3.7.10",
+    "@shopify/polaris": "^12.0.0",
+    "@shopify/shopify-app-express": "^2.1.0",
+    "@shopify/shopify-app-session-storage-memory": "^1.1.0",
+    "express": "^4.18.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "dotenv": "^16.3.1",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0",
+    "eslint": "^8.53.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
