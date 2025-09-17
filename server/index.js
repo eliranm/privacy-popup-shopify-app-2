@@ -68,21 +68,6 @@ app.get('/api/config', (req, res) => {
 // Apply Shopify middleware
 app.use(shopify.cspHeaders());
 
-// Handle OAuth installation at root path
-app.get('/', async (req, res, next) => {
-  console.log('Root path accessed:', req.query);
-  
-  // Check if this is an OAuth request
-  if (req.query.shop) {
-    console.log('OAuth request detected for shop:', req.query.shop);
-    // Use Shopify's OAuth handling
-    return shopify.ensureInstalledOnShop()(req, res, next);
-  }
-  
-  // For non-OAuth requests, serve the React app
-  return next();
-});
-
 // Webhook handlers
 app.post('/api/webhooks/app/uninstalled', express.raw({ type: 'application/json' }), async (req, res) => {
   const hmac = req.get('x-shopify-hmac-sha256');
@@ -97,8 +82,14 @@ app.post('/api/webhooks/app/uninstalled', express.raw({ type: 'application/json'
   res.status(200).send('OK');
 });
 
-// API routes
-app.use('/api/*', shopify.validateAuthenticatedSession());
+// API routes (protected)
+app.use('/api/*', (req, res, next) => {
+  // Skip auth for health and config endpoints
+  if (req.path === '/api/health' || req.path === '/api/config') {
+    return next();
+  }
+  return shopify.validateAuthenticatedSession()(req, res, next);
+});
 
 app.get('/api/shop', async (req, res) => {
   try {
