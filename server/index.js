@@ -65,6 +65,30 @@ app.get('/api/config', (req, res) => {
   });
 });
 
+// Debug endpoint to show OAuth URL construction (for troubleshooting)
+app.get('/api/debug-oauth', (req, res) => {
+  const { shop } = req.query;
+  
+  if (!shop) {
+    return res.status(400).json({ error: 'Shop parameter is required' });
+  }
+
+  const scopes = 'write_themes,read_themes';
+  const redirectUri = `${process.env.HOST}/api/auth/callback`;
+  const clientId = process.env.SHOPIFY_API_KEY;
+  
+  // Show the OAuth URL components (without actually redirecting)
+  res.json({
+    shop,
+    clientId: clientId ? `${clientId.substring(0, 8)}...` : 'Missing',
+    scopes,
+    redirectUri,
+    fullAuthUrl: `https://${shop}/admin/oauth/authorize?client_id=${clientId}&scope=${scopes}&redirect_uri=${encodeURIComponent(redirectUri)}&state=debug`,
+    partnersAppUrl: process.env.HOST,
+    expectedCallback: `${process.env.HOST}/api/auth/callback`
+  });
+});
+
 // Test OAuth endpoint
 app.get('/api/test-auth', (req, res) => {
   const { shop } = req.query;
