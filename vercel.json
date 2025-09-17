@@ -1,21 +1,21 @@
 {
   "functions": {
-    "server/index.js": {
+    "api/index.js": {
       "maxDuration": 10
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/server/index.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/auth/(.*)",
-      "destination": "/server/index.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/(.*)",
-      "destination": "/server/index.js",
+      "destination": "/api/index.js",
       "has": [
         {
           "type": "query",
@@ -25,7 +25,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/server/index.js",
+      "destination": "/api/index.js",
       "has": [
         {
           "type": "query",
