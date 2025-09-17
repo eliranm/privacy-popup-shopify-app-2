@@ -140,6 +140,12 @@ app.get('/auth/callback', async (req, res) => {
   return;
 });
 
+// Critical: Handle /exitiframe for embedded apps
+app.get('/exitiframe', shopify.ensureInstalledOnShop(), async (req, res) => {
+  // This will be handled by Shopify middleware
+  return;
+});
+
 // Root path - serve React app for regular requests, OAuth for Shopify requests
 app.get('/', async (req, res, next) => {
   // If there's a shop parameter, this is an OAuth request - redirect to /auth
