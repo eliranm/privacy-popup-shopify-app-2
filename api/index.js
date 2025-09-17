@@ -133,20 +133,29 @@ app.use(shopify.cspHeaders());
 app.get('/auth', shopify.ensureInstalledOnShop(), async (req, res) => {
   console.log('OAuth /auth route hit');
   // This will be handled by Shopify middleware
-  return;
+  // Ensure we always return a response
+  if (!res.headersSent) {
+    res.status(200).json({ message: 'OAuth flow initiated' });
+  }
 });
 
 app.get('/auth/callback', async (req, res) => {
   console.log('OAuth callback /auth/callback route hit');
   // This will be handled by Shopify middleware
-  return;
+  // Ensure we always return a response
+  if (!res.headersSent) {
+    res.status(200).json({ message: 'OAuth callback processed' });
+  }
 });
 
 // Critical: Handle /exitiframe for embedded apps
 app.get('/exitiframe', shopify.ensureInstalledOnShop(), async (req, res) => {
   console.log('Exit iframe /exitiframe route hit');
   // This will be handled by Shopify middleware
-  return;
+  // Ensure we always return a response
+  if (!res.headersSent) {
+    res.status(200).json({ message: 'Exit iframe processed' });
+  }
 });
 
 // Add timeout middleware to prevent hanging
@@ -160,6 +169,14 @@ app.use((req, res, next) => {
   res.on('finish', () => clearTimeout(timeout));
   res.on('close', () => clearTimeout(timeout));
   next();
+});
+
+// Global error handler to catch unhandled exceptions
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Root path - serve React app for regular requests, OAuth for Shopify requests
