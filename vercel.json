@@ -1,41 +1,37 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+  "functions": {
+    "server/index.js": {
+      "maxDuration": 10
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "server/index.js"
+      "source": "/api/(.*)",
+      "destination": "/server/index.js"
     },
     {
-      "src": "/auth/(.*)",
-      "dest": "server/index.js"
+      "source": "/auth/(.*)",
+      "destination": "/server/index.js"
     },
     {
-      "src": "/(.*\\?.*shop=.*)",
-      "dest": "server/index.js"
+      "source": "/(.*)",
+      "destination": "/server/index.js",
+      "has": [
+        {
+          "type": "query",
+          "key": "shop"
+        }
+      ]
     },
     {
-      "src": "/(.*\\?.*hmac=.*)",
-      "dest": "server/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "dist/$1"
+      "source": "/(.*)",
+      "destination": "/server/index.js",
+      "has": [
+        {
+          "type": "query",
+          "key": "hmac"
+        }
+      ]
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
