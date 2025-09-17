@@ -14,11 +14,11 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/install",
+      "source": "/webhooks/(.*)",
       "destination": "/api/index.js"
     },
     {
-      "source": "/",
+      "source": "/(.*)",
       "destination": "/api/index.js"
     }
   ]

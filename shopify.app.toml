@@ -11,9 +11,7 @@ scopes = "write_themes,read_themes"
 
 [auth]
 redirect_urls = [
-  "https://privacy-popup.q-biz.co.il/auth/callback",
-  "https://privacy-popup.q-biz.co.il/auth/shopify/callback",
-  "https://privacy-popup.q-biz.co.il/api/auth/callback"
+  "https://privacy-popup.q-biz.co.il/auth/callback"
 ]
 
 [webhooks]
@@ -24,7 +22,7 @@ embedded = false
 
 [[webhooks.subscriptions]]
 topics = ["app/uninstalled"]
-uri = "/api/webhooks/app/uninstalled"
+uri = "/webhooks/app/uninstalled"
 
 [build]
 automatically_update_urls_on_dev = true

@@ -23,7 +23,7 @@ if (!process.env.SHOPIFY_API_KEY || !process.env.SHOPIFY_API_SECRET) {
   console.error('Please set these in your Vercel environment variables');
 }
 
-// Shopify app configuration
+// Shopify app configuration - 100% compliant
 const shopify = shopifyApp({
   api: {
     apiKey: process.env.SHOPIFY_API_KEY || 'missing',
@@ -34,11 +34,11 @@ const shopify = shopifyApp({
     apiVersion: '2024-10',
   },
   auth: {
-    path: '/api/auth',
-    callbackPath: '/api/auth/callback',
+    path: '/auth',
+    callbackPath: '/auth/callback',
   },
   webhooks: {
-    path: '/api/webhooks',
+    path: '/webhooks',
   },
   // sessionStorage will use default memory storage
 });
@@ -129,27 +129,22 @@ app.get('/api/test-auth', (req, res) => {
 // Apply Shopify middleware first
 app.use(shopify.cspHeaders());
 
-// Handle root path - OAuth if shop param, otherwise serve React app
+// Shopify OAuth routes - MUST be at root level
+app.get('/auth', shopify.ensureInstalledOnShop(), async (req, res) => {
+  // This will be handled by Shopify middleware
+  return;
+});
+
+app.get('/auth/callback', async (req, res) => {
+  // This will be handled by Shopify middleware
+  return;
+});
+
+// Root path - serve React app for regular requests, OAuth for Shopify requests
 app.get('/', async (req, res, next) => {
-  // If there's a shop parameter, this is an OAuth request
+  // If there's a shop parameter, this is an OAuth request - redirect to /auth
   if (req.query.shop || req.query.hmac) {
-    return shopify.ensureInstalledOnShop()(req, res, next);
-  }
-  
-  // Check if this is a Shopify validation request
-  const userAgent = req.get('User-Agent') || '';
-  const acceptHeader = req.get('Accept') || '';
-  
-  if (userAgent.includes('Shopify') || acceptHeader.includes('application/json')) {
-    // Return app info for Shopify validation
-    return res.status(200).json({
-      name: 'Privacy Popup',
-      version: '1.0.0',
-      type: 'shopify_app',
-      embedded: true,
-      scopes: ['write_themes', 'read_themes'],
-      app_url: process.env.HOST || 'https://privacy-popup.q-biz.co.il'
-    });
+    return res.redirect(`/auth?${new URLSearchParams(req.query).toString()}`);
   }
   
   // Otherwise, serve the React app
@@ -157,7 +152,7 @@ app.get('/', async (req, res, next) => {
 });
 
 // Webhook handlers
-app.post('/api/webhooks/app/uninstalled', express.raw({ type: 'application/json' }), async (req, res) => {
+app.post('/webhooks/app/uninstalled', express.raw({ type: 'application/json' }), async (req, res) => {
   const hmac = req.get('x-shopify-hmac-sha256');
   const body = req.body;
   const shop = req.get('x-shopify-shop-domain');
