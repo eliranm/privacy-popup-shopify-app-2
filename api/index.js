@@ -54,6 +54,17 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Shopify app validation endpoint
+app.get('/api/app-info', (req, res) => {
+  res.status(200).json({
+    name: 'Privacy Popup',
+    version: '1.0.0',
+    type: 'shopify_app',
+    embedded: true,
+    scopes: ['write_themes', 'read_themes']
+  });
+});
+
 // Configuration check endpoint
 app.get('/api/config', (req, res) => {
   res.status(200).json({
@@ -124,6 +135,23 @@ app.get('/', async (req, res, next) => {
   if (req.query.shop || req.query.hmac) {
     return shopify.ensureInstalledOnShop()(req, res, next);
   }
+  
+  // Check if this is a Shopify validation request
+  const userAgent = req.get('User-Agent') || '';
+  const acceptHeader = req.get('Accept') || '';
+  
+  if (userAgent.includes('Shopify') || acceptHeader.includes('application/json')) {
+    // Return app info for Shopify validation
+    return res.status(200).json({
+      name: 'Privacy Popup',
+      version: '1.0.0',
+      type: 'shopify_app',
+      embedded: true,
+      scopes: ['write_themes', 'read_themes'],
+      app_url: process.env.HOST || 'https://privacy-popup.q-biz.co.il'
+    });
+  }
+  
   // Otherwise, serve the React app
   return next();
 });
