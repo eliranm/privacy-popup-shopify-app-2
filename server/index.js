@@ -89,6 +89,47 @@ app.get('/api/test-auth', (req, res) => {
   res.redirect(authUrl);
 });
 
+// Manual OAuth callback handler
+app.get('/api/auth/callback', async (req, res) => {
+  const { code, shop, state } = req.query;
+  
+  console.log('OAuth callback received:', { shop, code: code ? 'present' : 'missing', state });
+  
+  if (!code || !shop) {
+    return res.status(400).json({ error: 'Missing required parameters' });
+  }
+
+  try {
+    // Exchange code for access token
+    const tokenResponse = await fetch(`https://${shop}/admin/oauth/access_token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        client_id: process.env.SHOPIFY_API_KEY,
+        client_secret: process.env.SHOPIFY_API_SECRET,
+        code: code,
+      }),
+    });
+
+    const tokenData = await tokenResponse.json();
+    
+    if (tokenData.access_token) {
+      console.log('Access token obtained for shop:', shop);
+      
+      // Redirect to the main app interface
+      res.redirect(`/?shop=${shop}&host=${Buffer.from(`${shop}/admin`).toString('base64')}`);
+    } else {
+      console.error('Failed to get access token:', tokenData);
+      res.status(400).json({ error: 'Failed to obtain access token' });
+    }
+  } catch (error) {
+    console.error('OAuth callback error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Apply Shopify middleware
 app.use(shopify.cspHeaders());
 
