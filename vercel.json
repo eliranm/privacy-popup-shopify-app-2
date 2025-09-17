@@ -14,7 +14,11 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/(.*)",
+      "source": "/install",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/",
       "destination": "/api/index.js",
       "has": [
         {
@@ -24,7 +28,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/",
       "destination": "/api/index.js",
       "has": [
         {
