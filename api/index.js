@@ -131,19 +131,35 @@ app.use(shopify.cspHeaders());
 
 // Shopify OAuth routes - MUST be at root level
 app.get('/auth', shopify.ensureInstalledOnShop(), async (req, res) => {
+  console.log('OAuth /auth route hit');
   // This will be handled by Shopify middleware
   return;
 });
 
 app.get('/auth/callback', async (req, res) => {
+  console.log('OAuth callback /auth/callback route hit');
   // This will be handled by Shopify middleware
   return;
 });
 
 // Critical: Handle /exitiframe for embedded apps
 app.get('/exitiframe', shopify.ensureInstalledOnShop(), async (req, res) => {
+  console.log('Exit iframe /exitiframe route hit');
   // This will be handled by Shopify middleware
   return;
+});
+
+// Add timeout middleware to prevent hanging
+app.use((req, res, next) => {
+  const timeout = setTimeout(() => {
+    if (!res.headersSent) {
+      res.status(504).json({ error: 'Request timeout' });
+    }
+  }, 25000); // 25 second timeout
+
+  res.on('finish', () => clearTimeout(timeout));
+  res.on('close', () => clearTimeout(timeout));
+  next();
 });
 
 // Root path - serve React app for regular requests, OAuth for Shopify requests
