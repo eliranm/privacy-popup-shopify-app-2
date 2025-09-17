@@ -23,6 +23,10 @@
       "dest": "server/index.js"
     },
     {
+      "src": "/(.*\\?.*shop=.*)",
+      "dest": "server/index.js"
+    },
+    {
       "src": "/(.*\\?.*hmac=.*)",
       "dest": "server/index.js"
     },
