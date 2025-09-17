@@ -65,6 +65,30 @@ app.get('/api/config', (req, res) => {
   });
 });
 
+// Test OAuth endpoint
+app.get('/api/test-auth', (req, res) => {
+  const { shop } = req.query;
+  
+  if (!shop) {
+    return res.status(400).json({ error: 'Shop parameter is required' });
+  }
+
+  // Manual OAuth URL construction (like your blocks app probably does)
+  const scopes = 'write_themes,read_themes';
+  const redirectUri = `${process.env.HOST}/api/auth/callback`;
+  const state = Math.random().toString(36).substring(7);
+  
+  const authUrl = `https://${shop}/admin/oauth/authorize?` +
+    `client_id=${process.env.SHOPIFY_API_KEY}&` +
+    `scope=${scopes}&` +
+    `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+    `state=${state}`;
+  
+  console.log('Manual OAuth URL:', authUrl);
+  
+  res.redirect(authUrl);
+});
+
 // Apply Shopify middleware
 app.use(shopify.cspHeaders());
 
