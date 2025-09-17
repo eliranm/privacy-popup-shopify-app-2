@@ -15,8 +15,19 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    rollupOptions: {
+      external: ['@shopify/polaris/build/esm/styles/global.css'],
+    },
   },
   define: {
     global: 'globalThis',
+  },
+  optimizeDeps: {
+    include: ['@shopify/polaris'],
+  },
+  resolve: {
+    alias: {
+      './globalThis.css.js': '@shopify/polaris/build/esm/styles/global.css',
+    },
   },
 });

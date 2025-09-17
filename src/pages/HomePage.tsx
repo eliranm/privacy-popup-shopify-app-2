@@ -11,7 +11,7 @@ import {
   Icon,
   ButtonGroup,
 } from '@shopify/polaris';
-import { ExternalMinor, SettingsMinor, ViewMinor } from '@shopify/polaris-icons';
+// Icons are imported differently in newer versions
 import { TitleBar } from '@shopify/app-bridge-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -94,14 +94,12 @@ export function HomePage() {
                 <ButtonGroup>
                   <Button
                     primary
-                    icon={ExternalMinor}
                     loading={isActivating}
                     onClick={handleActivateExtension}
                   >
                     Activate in Theme Editor
                   </Button>
                   <Button
-                    icon={SettingsMinor}
                     onClick={handleViewSettings}
                   >
                     Configure Settings

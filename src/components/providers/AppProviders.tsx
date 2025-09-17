@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppProvider as PolarisProvider } from '@shopify/polaris';
 import { Provider as AppBridgeProvider } from '@shopify/app-bridge-react';
-import enTranslations from '@shopify/polaris/locales/en.json';
 
 interface AppProviderProps {
   children: React.ReactNode;
@@ -25,7 +24,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
   return (
     <AppBridgeProvider config={appBridgeConfig}>
-      <PolarisProvider i18n={enTranslations}>
+      <PolarisProvider>
         {children}
       </PolarisProvider>
     </AppBridgeProvider>

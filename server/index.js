@@ -4,7 +4,6 @@ import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 import dotenv from 'dotenv';
 import { shopifyApp } from '@shopify/shopify-app-express';
-import { MemorySessionStorage } from '@shopify/shopify-app-session-storage-memory';
 
 // Load environment variables
 dotenv.config();
@@ -29,7 +28,7 @@ const shopify = shopifyApp({
   webhooks: {
     path: '/api/webhooks',
   },
-  sessionStorage: new MemorySessionStorage(),
+  // sessionStorage will use default memory storage
 });
 
 const app = express();
