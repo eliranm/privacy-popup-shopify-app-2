@@ -118,8 +118,13 @@ app.get('/api/test-auth', (req, res) => {
 // Apply Shopify middleware first
 app.use(shopify.cspHeaders());
 
-// Let Shopify handle OAuth installation at root
-app.get('/', shopify.ensureInstalledOnShop(), async (req, res, next) => {
+// Handle root path - OAuth if shop param, otherwise serve React app
+app.get('/', async (req, res, next) => {
+  // If there's a shop parameter, this is an OAuth request
+  if (req.query.shop || req.query.hmac) {
+    return shopify.ensureInstalledOnShop()(req, res, next);
+  }
+  // Otherwise, serve the React app
   return next();
 });
 
@@ -223,7 +228,14 @@ app.use(express.static(join(__dirname, '../dist')));
 
 // Handle React routing - serve index.html for all non-API routes
 app.get('*', (req, res, next) => {
+  // Skip API routes
   if (req.path.startsWith('/api/')) {
+    return next();
+  }
+  
+  // Skip if this is a Shopify OAuth request that should have been handled above
+  if (req.query.shop || req.query.hmac) {
+    console.log('Missed OAuth request at catch-all:', req.path, req.query);
     return next();
   }
   

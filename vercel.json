@@ -19,23 +19,7 @@
     },
     {
       "source": "/",
-      "destination": "/api/index.js",
-      "has": [
-        {
-          "type": "query",
-          "key": "shop"
-        }
-      ]
-    },
-    {
-      "source": "/",
-      "destination": "/api/index.js",
-      "has": [
-        {
-          "type": "query",
-          "key": "hmac"
-        }
-      ]
+      "destination": "/api/index.js"
     }
   ]
 }
