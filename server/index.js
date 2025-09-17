@@ -11,14 +11,20 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Debug environment variables
+console.log('Environment check:');
+console.log('SHOPIFY_API_KEY:', process.env.SHOPIFY_API_KEY ? 'Set' : 'Missing');
+console.log('SHOPIFY_API_SECRET:', process.env.SHOPIFY_API_SECRET ? 'Set' : 'Missing');
+console.log('HOST:', process.env.HOST);
+
 // Shopify app configuration
 const shopify = shopifyApp({
   api: {
     apiKey: process.env.SHOPIFY_API_KEY,
     apiSecretKey: process.env.SHOPIFY_API_SECRET,
     scopes: process.env.SCOPES?.split(',') || ['write_themes', 'read_themes'],
-    hostName: process.env.HOST?.replace(/https?:\/\//, '') || 'localhost:3000',
-    hostScheme: process.env.HOST?.includes('https') ? 'https' : 'http',
+    hostName: process.env.HOST?.replace(/https?:\/\//, '') || 'privacy-popup.q-biz.co.il',
+    hostScheme: 'https',
     apiVersion: '2024-10',
   },
   auth: {
@@ -46,8 +52,17 @@ app.get('/api/health', (req, res) => {
 app.use(shopify.cspHeaders());
 
 // Handle OAuth installation at root path
-app.get('/', shopify.ensureInstalledOnShop(), async (req, res, next) => {
-  // If we reach here, the app is installed and authenticated
+app.get('/', async (req, res, next) => {
+  console.log('Root path accessed:', req.query);
+  
+  // Check if this is an OAuth request
+  if (req.query.shop) {
+    console.log('OAuth request detected for shop:', req.query.shop);
+    // Use Shopify's OAuth handling
+    return shopify.ensureInstalledOnShop()(req, res, next);
+  }
+  
+  // For non-OAuth requests, serve the React app
   return next();
 });
 
