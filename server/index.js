@@ -17,11 +17,17 @@ console.log('SHOPIFY_API_KEY:', process.env.SHOPIFY_API_KEY ? 'Set' : 'Missing')
 console.log('SHOPIFY_API_SECRET:', process.env.SHOPIFY_API_SECRET ? 'Set' : 'Missing');
 console.log('HOST:', process.env.HOST);
 
+// Check if required environment variables are set
+if (!process.env.SHOPIFY_API_KEY || !process.env.SHOPIFY_API_SECRET) {
+  console.error('❌ Missing required environment variables: SHOPIFY_API_KEY and/or SHOPIFY_API_SECRET');
+  console.error('Please set these in your Vercel environment variables');
+}
+
 // Shopify app configuration
 const shopify = shopifyApp({
   api: {
-    apiKey: process.env.SHOPIFY_API_KEY,
-    apiSecretKey: process.env.SHOPIFY_API_SECRET,
+    apiKey: process.env.SHOPIFY_API_KEY || 'missing',
+    apiSecretKey: process.env.SHOPIFY_API_SECRET || 'missing',
     scopes: process.env.SCOPES?.split(',') || ['write_themes', 'read_themes'],
     hostName: process.env.HOST?.replace(/https?:\/\//, '') || 'privacy-popup.q-biz.co.il',
     hostScheme: 'https',
@@ -45,6 +51,17 @@ app.get('/api/health', (req, res) => {
     status: 'healthy', 
     timestamp: new Date().toISOString(),
     version: '1.0.0'
+  });
+});
+
+// Configuration check endpoint
+app.get('/api/config', (req, res) => {
+  res.status(200).json({
+    shopifyApiKey: process.env.SHOPIFY_API_KEY ? 'Set' : 'Missing',
+    shopifyApiSecret: process.env.SHOPIFY_API_SECRET ? 'Set' : 'Missing',
+    host: process.env.HOST || 'Not set',
+    scopes: process.env.SCOPES || 'Using defaults',
+    configured: !!(process.env.SHOPIFY_API_KEY && process.env.SHOPIFY_API_SECRET)
   });
 });
 
