@@ -19,6 +19,14 @@
       "dest": "server/index.js"
     },
     {
+      "src": "/auth/(.*)",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/(.*\\?.*hmac=.*)",
+      "dest": "server/index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "dist/$1"
     }

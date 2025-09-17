@@ -45,6 +45,12 @@ app.get('/api/health', (req, res) => {
 // Apply Shopify middleware
 app.use(shopify.cspHeaders());
 
+// Handle OAuth installation at root path
+app.get('/', shopify.ensureInstalledOnShop(), async (req, res, next) => {
+  // If we reach here, the app is installed and authenticated
+  return next();
+});
+
 // Webhook handlers
 app.post('/api/webhooks/app/uninstalled', express.raw({ type: 'application/json' }), async (req, res) => {
   const hmac = req.get('x-shopify-hmac-sha256');
